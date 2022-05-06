@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  entjs:
+    image: entjs
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      PORT: 3000
+      DB_HOST: mongo
+      DB_NAME: ent
+      DB_PORT: 27017
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    volumes:
+      - ./mongo:/data/db
+    ports:
+      - '27017:27017'
+
+volumes:
+  mongo: {}

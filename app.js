@@ -1,9 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose');
+require('dotenv').config();
 const bodyParser = require('body-parser');
 const users = require('./routes/users');
 
-const { PORT = 3000 } = process.env;
+const {
+  DB_HOST,
+  DB_PORT,
+  DB_NAME,
+  PORT = 3000 
+} = process.env;
+
 const ERROR_NOT_FOUND_CODE = 404;
 
 const app = express();
@@ -11,7 +18,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect('mongodb://localhost:27017/ent', {});
+
+
+mongoose.connect(`mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`, {useNewUrlParser: true});
 
 app.use((req, res, next) => {
   req.user = {
